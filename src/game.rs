@@ -1,9 +1,9 @@
-use std::time::{SystemTime};
+use std::time::SystemTime;
 
 use crate::{
     settings::{
-        ENTITY_DRAW_COLOR_BLUE, ENTITY_DRAW_COLOR_GREEN, ENTITY_DRAW_COLOR_RED, ENTITY_DRAW_RADIUS,
-        ENTITY_TOTAL_NUMBER, SUGAR_MAX_PORDUCTION, WORLD_GIRD_WIDTH, WORLD_GRID_NUMBER,
+        ENTITY_COLOR, ENTITY_COLOR_ORIGIN, ENTITY_DRAW_RADIUS, ENTITY_TOTAL_NUMBER, LINE_COLOR,
+        SUGAR_MAX_PORDUCTION, WORLD_GIRD_WIDTH, WORLD_GRID_NUMBER,
     },
     world_grid::WorldGrid,
 };
@@ -172,7 +172,14 @@ impl Game {
                 DayTimeStatus::DayTimeArrived => {
                     self.entity_pos_list = self.entity_target_pos_list.clone();
                     let pos = &self.entity_pos_list[i];
-                    entity_daytime_update(pos, status, &self.world_grid.grid_matrix, &mut self.day_count, &mut self.day_count_indicator, &mut self.time_stamp);
+                    entity_daytime_update(
+                        pos,
+                        status,
+                        &self.world_grid.grid_matrix,
+                        &mut self.day_count,
+                        &mut self.day_count_indicator,
+                        &mut self.time_stamp,
+                    );
                     self.entity_draw(pos)
                 }
                 // Also consideration period
@@ -184,17 +191,18 @@ impl Game {
                         &self.entity_pos_list,
                         &mut self.entity_target_pos_list,
                         &self.world_grid.grid_matrix,
-                        &mut self.day_count_indicator
+                        &mut self.day_count_indicator,
                     );
                     self.entity_draw(pos);
                 }
                 DayTimeStatus::EntitiesMoving(time_period) => {
                     let pos = self.entity_pos_list[i].clone();
                     let des = self.entity_target_pos_list[i].clone();
-                    let (x, y) = entity_moving_update(&pos, &des, time_period);
-                    self.entity_draw_raw(x, y, false);
-                    let (x, y) = pos.entity_to_draw();
-                    self.entity_draw_raw(x, y, true);
+                    let (sx, sy) = pos.entity_to_draw();
+                    let (dx, dy) = entity_moving_update(&pos, &des, time_period);
+                    self.moving_line_draw(sx, sy, dx, dy);
+                    self.entity_draw_raw(sx, sy, true);
+                    self.entity_draw_raw(dx, dy, false);
                 }
             }
         }
@@ -219,21 +227,18 @@ impl Game {
     fn entity_draw_raw(&self, x: i16, y: i16, moving_indicator: bool) {
         let color;
         if moving_indicator {
-            color = Color::RGBA(
-                ENTITY_DRAW_COLOR_RED,
-                ENTITY_DRAW_COLOR_GREEN,
-                ENTITY_DRAW_COLOR_BLUE,
-                50,
-            );
+            color = ENTITY_COLOR_ORIGIN;
         } else {
-            color = Color::RGB(
-                ENTITY_DRAW_COLOR_RED,
-                ENTITY_DRAW_COLOR_GREEN,
-                ENTITY_DRAW_COLOR_BLUE,
-            );
+            color = ENTITY_COLOR;
         }
         self.canvas
             .filled_circle(x, y, ENTITY_DRAW_RADIUS, color)
+            .unwrap();
+    }
+
+    fn moving_line_draw(&self, sx: i16, sy: i16, dx: i16, dy: i16) {
+        self.canvas
+            .thick_line(sx, sy, dx, dy, 2, LINE_COLOR)
             .unwrap();
     }
 }

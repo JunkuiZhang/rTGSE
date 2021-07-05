@@ -1,8 +1,12 @@
-use std::time::{SystemTime};
+use std::time::SystemTime;
 
 use sdl2::pixels::Color;
 
-use crate::settings::{CONSIDERATION_SECOND, DAYTIME_SECOND, ENTITY_SUGAR_CONSUMED, ENTITY_TOTAL_NUMBER, ENTITY_VISION_DISTANCE, MOVING_SECOND, TARGET_BLUE, TARGET_GREEN, TARGET_RED, WORLD_GRID_NUMBER};
+use crate::settings::{
+    CONSIDERATION_SECOND, DAYTIME_SECOND, ENTITY_SUGAR_CONSUMED, ENTITY_TOTAL_NUMBER,
+    ENTITY_VISION_DISTANCE, MOVING_SECOND, TARGET_BLUE, TARGET_GREEN, TARGET_RED,
+    WORLD_GRID_NUMBER,
+};
 
 use super::game_data::{DayTimeStatus, EntityStatus, GridCoordinate};
 
@@ -12,7 +16,7 @@ pub fn entity_daytime_update(
     grid: &[[f64; WORLD_GRID_NUMBER]; WORLD_GRID_NUMBER],
     daytime_count: &mut u32,
     daytime_count_indicator: &mut bool,
-    time_stamp: &mut SystemTime
+    time_stamp: &mut SystemTime,
 ) {
     if !(*daytime_count_indicator) {
         *daytime_count_indicator = true;
@@ -52,7 +56,7 @@ pub fn entity_consideration_update(
     pos_list: &[GridCoordinate; ENTITY_TOTAL_NUMBER],
     target_list: &mut [GridCoordinate; ENTITY_TOTAL_NUMBER],
     grid: &[[f64; WORLD_GRID_NUMBER]; WORLD_GRID_NUMBER],
-    daytime_indicator: &mut bool
+    daytime_indicator: &mut bool,
 ) {
     if status.is_calculated {
         status.is_calculated = false;

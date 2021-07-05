@@ -1,3 +1,5 @@
+use sdl2::pixels::Color;
+
 pub const WINDOW_WIDTH: u32 = 600;
 pub const WINDOW_TITLE: &str = "The Great Sugar Empire";
 pub const ENTITY_TOTAL_NUMBER: usize = 100;
@@ -11,9 +13,9 @@ pub const ENTITY_VISION_DISTANCE: i16 = 2;
 pub const TARGET_RED: f64 = 220.0;
 pub const TARGET_GREEN: f64 = 160.0;
 pub const TARGET_BLUE: f64 = 190.0;
-pub const ENTITY_DRAW_COLOR_RED: u8 = 0;
-pub const ENTITY_DRAW_COLOR_GREEN: u8 = 0;
-pub const ENTITY_DRAW_COLOR_BLUE: u8 = 120;
 pub const DAYTIME_SECOND: f64 = 2.0;
 pub const CONSIDERATION_SECOND: f64 = 0.2 * DAYTIME_SECOND;
 pub const MOVING_SECOND: f64 = 0.6 * DAYTIME_SECOND;
+pub const ENTITY_COLOR: Color = Color::RGB(0, 0, 120);
+pub const ENTITY_COLOR_ORIGIN: Color = Color::RGBA(0, 0, 120, 50);
+pub const LINE_COLOR: Color = Color::RGB(50, 100, 20);
