@@ -1,3 +1,8 @@
+//
+// @author: 张峻魁 | Junkui Zhang
+// @email:  junkuizhangchina@gmail.com
+// @date:   2021, Jul
+//
 use game::Game;
 use settings::{WINDOW_TITLE, WINDOW_WIDTH};
 
